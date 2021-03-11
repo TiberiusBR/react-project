@@ -57,7 +57,7 @@ export default function (db) {
 
     var email = req.query.email;
 
-    const search = await db.collection("trees").find({userEmail: email}).toArray();
+    const search = await db.collection("trees").find({userEmail: email}).toArray()
 
     if (search) {
       res.json(search);
