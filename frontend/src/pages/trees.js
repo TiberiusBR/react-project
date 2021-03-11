@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React , {useState,useEffect} from "react";
 import { useParams } from "react-router";
 import {
   AppBar,
@@ -11,13 +11,55 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 
-function Comp2() {
-  let user = "Heitor";
+var deleteTree = ""
+
+function Trees() {
+  const [trees, setTrees] = useState([]);
+
+  var emailTest = useParams().userEmail
+
+  useEffect(async () => {
+    console.log("UseEffect entered.")
+    try {
+      var res = await axios.get(
+        "http://localhost:3333/user/user-trees?email=" + emailTest
+      );
+      setTrees(res.data);
+    } catch (error) {
+      alert("No trees found.");
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   axios.get("http://localhost:3333/user/user-trees?email=" + emailTest)
+  //   .then(res => setTrees(res.data)).catch(() => alert("error")) 
+  //  } , [emailTest])
+
+  deleteTree = async () => {
+    try {
+      await axios.post("http://localhost:3333/tree/delete", {
+        userEmail: emailTest,
+      });
+    } catch (error) {
+      alert("TREE NOT FOUND.");
+    }
+  };
+
+  return (
+    <div>
+      <Comp2 key={trees[0]._id} nome={trees[0].nome}/>
+      <TreesG key={trees[0]._id} trees={trees} />
+    </div>
+  );
+}
+
+function Comp2(props) {
+  let user = props.nome
   return (
     <AppBar position="static">
       <Toolbar>
         <Container style={{ display: "flex", justifyContent: "space-between" }}>
-          <p>Bem vindo, {user}</p>
+          <p>Bem vindo, {user} </p>
           <a href="/new-tree" id="criar-tree">
             Criar Tree
           </a>
@@ -28,10 +70,10 @@ function Comp2() {
 }
 
 function TreesG(props) {
+  console.log(props)
   return (
     <div style={{ display: "flex", flexWrap: "wrap" }}>
-      <h1>Ok bro</h1>
-      {/* {props.trees.map((tree, index) => {
+      {props.trees.map((tree, index) => {
         return (
           <Card
             style={{
@@ -48,48 +90,13 @@ function TreesG(props) {
               <Button size="small" href={"/tree/" + tree.nome}>
                 Editar
               </Button>
-              <Button size="small" >
-                Deletar
-              </Button>
+              <Button size="small" onClick={deleteTree}>Deletar</Button>
             </CardActions>
           </Card>
-        ); */}
+        );
       })}
     </div>
   );
 }
 
-export default function Trees() {
-  const [email, setEmail] = useState();
-  const [trees, setTrees] = useState();
-
-  const emailTest = useParams().userEmail
-
-  useEffect(async () => {
-    try {
-      var res = await axios.get(
-        "http://localhost:3333/user/user-trees?email=" + emailTest
-      );
-      setTrees(res.data);
-    } catch (error) {
-      alert("No trees found.");
-    }
-  }, [email]);
-
-  var deleteTree = async () => {
-    try {
-      await axios.post("http://localhost:3333/tree/delete", {
-        userEmail: email,
-      });
-    } catch (error) {
-      alert("TREE NOT FOUND.");
-    }
-  };
-
-  return (
-    <div>
-      <Comp2 />
-      <TreesG trees={trees} />
-    </div>
-  );
-}
+export default Trees
