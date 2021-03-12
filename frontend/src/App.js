@@ -18,7 +18,7 @@ function App() {
         <Route path="/newTree/:userEmail" component={newTree}></Route>
         <Route path="/signup" component={signup}></Route>
         <Route path="/trees/:userEmail" component={trees}></Route>
-        <Route path="/tree/:nomeUnico" component={viewTree}></Route>
+        <Route path="/view/:nomeUnico" component={viewTree}></Route>
       </Switch>
     </BrowserRouter>
   );

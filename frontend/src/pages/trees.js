@@ -53,11 +53,9 @@ function Trees() {
   //   .then(res => setTrees(res.data)).catch(() => alert("error")) 
   //  } , [])
 
-  deleteTree = async () => {
+  deleteTree = async (nomeUnico) => {
     try {
-      await axios.delete("http://localhost:3333/tree/delete", {
-        userEmail: emailTest,
-      });
+      await axios.delete("http://localhost:3333/tree/delete?nomeUnico=" + nomeUnico)
     } catch (error) {
       alert("TREE NOT FOUND.");
     }
@@ -68,20 +66,23 @@ function Trees() {
   }
 
   return (
+    trees == undefined ?  <div></div> :
     <div>
-      <Comp2 nome={trees}/>
-      <TreesG trees={trees} />
+      <Comp2/>
+      <TreesG key={trees._id} trees={trees} />
     </div>
   );
 }
 
-function Comp2(props) {
-  console.log(props)
+function Comp2() {
+
+  var emailTest = useParams().userEmail
+
   return (
     <AppBar position="static">
       <Toolbar>
         <Container style={{ display: "flex", justifyContent: "space-between" }}>
-          <p>Bem vindo, usuário! </p>
+          <p>Bem vindo, {emailTest} </p>
           <button onClick={createTree} id="criar-tree">
             Criar Tree
           </button>
@@ -92,6 +93,7 @@ function Comp2(props) {
 }
 
 function TreesG(props) {
+
   return (
     <div style={{ display: "flex", flexWrap: "wrap" }}>
       {props.trees.map((tree, index) => {
@@ -105,19 +107,24 @@ function TreesG(props) {
             }}
           >
             <CardContent>
-              <h4 style={{ textAlign: "center" }}>{tree.nome}</h4>
+              <h4 style={{ textAlign: "center" }}>
+                <a href="/">
+                  {tree.titulo}
+                </a>
+              </h4>
             </CardContent>
             <CardActions>
               <Button size="small" >
                 Editar
               </Button>
-              <Button size="small" >Deletar</Button>
+              <Button size="small" onClick={(e) => deleteTree(tree.nomeUnico)} >Deletar</Button>
             </CardActions>
           </Card>
         );
-      })}
+      })} 
     </div>
   );
+
 }
 
 export default Trees

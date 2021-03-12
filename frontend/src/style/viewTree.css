@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+#container{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+#avatar{
+    height:300px;
+    width:300px;
+    object-fit:cover; 
+    border-radius:50%;   
+}
+
+#text{
+    font-family: "Muli";
+}
+
+.button {
+    background-color: transparent;
+    color: green;
+    border: 2px solid green;
+    border-radius: 50px;
+    width: 100%;
+    padding: 16px  0px ;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: green;
+    text-decoration: none;
+    border: 1px solid white;
+    color: white;
+  }
